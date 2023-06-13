@@ -189,7 +189,7 @@ func (f *teapotFilter) SendTeapotMessage(ctx filters.FilterContext, teapot teapo
 		Message:                     "Teapot enabled",
 		UserMessage:                 fmt.Sprintf(teapot.Message, teapot.EndsAt.UTC().Format("3:04pm UTC")),
 		UserTitle:                   teapot.Title,
-		PredictedUptimeTimestampUTC: teapot.EndsAt.UTC().String(),
+		PredictedUptimeTimestampUTC: teapot.EndsAt.UTC().Format(time.RFC3339),
 		Global:                      global,
 	})
 	ctx.Serve(&http.Response{

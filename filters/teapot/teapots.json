@@ -12,13 +12,12 @@
     "extendBy": 15
   },
   {
-    "enabled": true,
+    "enabled": false,
     "services": [
-      "explore"
+      "explore",
+      "discover"
     ],
-    "ignoreCountries": [
-      "GB"
-    ],
+    "ignoreCountries": [],
     "onlyCountries": [],
     "title": "Database Maintenance",
     "message": "Sorry! Muzz will be unavailable until %s whilst we do some essential database maintenance\n\nThere's no need to delete or reinstall your app",
@@ -28,15 +27,14 @@
   {
     "enabled": true,
     "services": [
+      "explore",
       "discover"
     ],
     "ignoreCountries": [],
-    "onlyCountries": [
-      "GB"
-    ],
+    "onlyCountries": [],
     "title": "Essential Maintenance",
     "message": "Sorry! Muzz will be unavailable until %s whilst we do some maintenance on our discover service\n\nThere's no need to delete or reinstall your app",
-    "endsAt": "2023-06-08T18:00:00Z",
+    "endsAt": "2023-06-13T18:00:00Z",
     "extendBy": 15
   }
 ]
