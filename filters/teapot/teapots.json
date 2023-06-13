@@ -1,0 +1,42 @@
+[
+  {
+    "enabled": false,
+    "services": [
+      "all"
+    ],
+    "ignoreCountries": [],
+    "onlyCountries": [],
+    "title": "Essential Maintenance",
+    "message": "Sorry! Muzz will be unavailable until %s whilst we do some essential maintenance\n\nThere's no need to delete or reinstall your app",
+    "endsAt": "2023-06-08T18:00:00Z",
+    "extendBy": 15
+  },
+  {
+    "enabled": true,
+    "services": [
+      "explore"
+    ],
+    "ignoreCountries": [
+      "GB"
+    ],
+    "onlyCountries": [],
+    "title": "Database Maintenance",
+    "message": "Sorry! Muzz will be unavailable until %s whilst we do some essential database maintenance\n\nThere's no need to delete or reinstall your app",
+    "endsAt": "2023-06-08T18:00:00Z",
+    "extendBy": 15
+  },
+  {
+    "enabled": true,
+    "services": [
+      "discover"
+    ],
+    "ignoreCountries": [],
+    "onlyCountries": [
+      "GB"
+    ],
+    "title": "Essential Maintenance",
+    "message": "Sorry! Muzz will be unavailable until %s whilst we do some maintenance on our discover service\n\nThere's no need to delete or reinstall your app",
+    "endsAt": "2023-06-08T18:00:00Z",
+    "extendBy": 15
+  }
+]

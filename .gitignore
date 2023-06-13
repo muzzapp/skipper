@@ -25,3 +25,4 @@ opentracingplugin/build
 build/
 skptesting/lorem.html
 .vscode/*
+.DS_Store
