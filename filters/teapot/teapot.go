@@ -119,6 +119,7 @@ func (f *teapotFilter) LoadServices() {
 	target := "/tmp/services.json"
 	err := f.FetchS3File(os.Getenv("TEAPOT_S3_BUCKET"), os.Getenv("TEAPOT_S3_SERVICES_KEY"), target)
 	if err != nil {
+		fmt.Printf("Error fetching services.json: %s", err)
 		return
 	}
 
@@ -143,6 +144,7 @@ func (f *teapotFilter) LoadTeapots() {
 	target := "/tmp/teapots.json"
 	err := f.FetchS3File(os.Getenv("TEAPOT_S3_BUCKET"), os.Getenv("TEAPOT_S3_TEAPOTS_KEY"), target)
 	if err != nil {
+		fmt.Printf("Error fetching teapots.json: %s", err)
 		return
 	}
 
