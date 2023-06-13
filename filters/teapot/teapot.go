@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/joho/godotenv"
 	"github.com/zalando/skipper/filters"
+	"golang.org/x/text/language"
 	"io"
 	"net/http"
 	"os"
@@ -35,14 +36,14 @@ type teapotService struct {
 }
 
 type teapotConfig struct {
-	Enabled         bool      `json:"enabled"`
-	Services        []string  `json:"services"`
-	IgnoreCountries []string  `json:"ignoreCountries"`
-	OnlyCountries   []string  `json:"onlyCountries"`
-	Title           string    `json:"title"`
-	Message         string    `json:"message"`
-	EndsAt          time.Time `json:"endsAt"`
-	ExtendBy        int       `json:"extendBy"`
+	Enabled         bool              `json:"enabled"`
+	Services        []string          `json:"services"`
+	IgnoreCountries []string          `json:"ignoreCountries"`
+	OnlyCountries   []string          `json:"onlyCountries"`
+	Title           map[string]string `json:"title"`
+	Message         map[string]string `json:"message"`
+	EndsAt          time.Time         `json:"endsAt"`
+	ExtendBy        int               `json:"extendBy"`
 }
 
 type teapotFilter struct {
@@ -53,11 +54,15 @@ type teapotFilter struct {
 	TeapotsHash  string
 }
 
+type teapotError struct {
+	Status int            `json:"status"`
+	Error  teapotResponse `json:"error"`
+}
+
 type teapotResponse struct {
-	HttpStatus                  int    `json:"http_status"`
+	Type                        int    `json:"type"`
+	Title                       string `json:"title"`
 	Message                     string `json:"message"`
-	UserMessage                 string `json:"user_message"`
-	UserTitle                   string `json:"user_title"`
 	PredictedUptimeTimestampUTC string `json:"predictedUptimeTimestampUTC"`
 	Global                      bool   `json:"global"`
 }
@@ -184,13 +189,43 @@ func (f *teapotFilter) CalculateCountry(ctx filters.FilterContext) string {
 }
 
 func (f *teapotFilter) SendTeapotMessage(ctx filters.FilterContext, teapot teapotConfig, global bool) {
-	jsonResponse, _ := json.Marshal(&teapotResponse{
-		HttpStatus:                  418,
-		Message:                     "Teapot enabled",
-		UserMessage:                 fmt.Sprintf(teapot.Message, teapot.EndsAt.UTC().Format("3:04pm UTC")),
-		UserTitle:                   teapot.Title,
-		PredictedUptimeTimestampUTC: teapot.EndsAt.UTC().Format(time.RFC3339),
-		Global:                      global,
+	var languageTags []language.Tag
+	for lang := range teapot.Message {
+		languageTags = append(languageTags, language.Make(lang))
+	}
+
+	var matcher = language.NewMatcher(languageTags)
+	accept := ctx.Request().Header.Get("Accept-Language")
+	tag, _ := language.MatchStrings(matcher, "", accept)
+	locale := tag.String()
+
+	if len(locale) > 5 {
+		locale = strings.Split(locale, "-")[0]
+	}
+
+	var titleLanguageTags []language.Tag
+	for lang := range teapot.Title {
+		titleLanguageTags = append(titleLanguageTags, language.Make(lang))
+	}
+
+	matcher = language.NewMatcher(titleLanguageTags)
+	tag, _ = language.MatchStrings(matcher, "", accept)
+	titleLocale := tag.String()
+
+	if len(titleLocale) > 5 {
+		titleLocale = strings.Split(titleLocale, "-")[0]
+	}
+
+	ctx.Logger().Infof("Locale: %s", locale)
+
+	jsonResponse, _ := json.Marshal(&teapotError{
+		Status: 418,
+		Error: teapotResponse{
+			Message:                     fmt.Sprintf(teapot.Message[locale], teapot.EndsAt.UTC().Format("3:04pm UTC")),
+			Title:                       teapot.Title[titleLocale],
+			PredictedUptimeTimestampUTC: teapot.EndsAt.UTC().Format(time.RFC3339),
+			Global:                      global,
+		},
 	})
 	ctx.Serve(&http.Response{
 		StatusCode: http.StatusTeapot,
