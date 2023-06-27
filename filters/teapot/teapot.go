@@ -60,11 +60,11 @@ type teapotError struct {
 }
 
 type teapotResponse struct {
-	Type                        int    `json:"type"`
-	Title                       string `json:"title"`
-	Message                     string `json:"message"`
-	PredictedUptimeTimestampUTC string `json:"predictedUptimeTimestampUTC"`
-	Global                      bool   `json:"global"`
+	Type                        int     `json:"type"`
+	Title                       *string `json:"title"`
+	Message                     *string `json:"message"`
+	PredictedUptimeTimestampUTC string  `json:"predictedUptimeTimestampUTC"`
+	Global                      bool    `json:"global"`
 }
 
 func NewTeapot() filters.Spec {
@@ -222,11 +222,12 @@ func (f *teapotFilter) SendTeapotMessage(ctx filters.FilterContext, teapot teapo
 	if strings.Contains(teapot.Message[locale], "%s") {
 		message = fmt.Sprintf(teapot.Message[locale], teapot.EndsAt.UTC().Format("3:04pm UTC"))
 	}
+	title := teapot.Title[titleLocale]
 	jsonResponse, _ := json.Marshal(&teapotError{
 		Status: 418,
 		Error: teapotResponse{
-			Message:                     message,
-			Title:                       teapot.Title[titleLocale],
+			Message:                     &message,
+			Title:                       &title,
 			PredictedUptimeTimestampUTC: teapot.EndsAt.UTC().Format(time.RFC3339),
 			Global:                      global,
 		},
