@@ -11,33 +11,10 @@
     "name": "discover",
     "routes": [
       {
-        "uri": "/v2.5/members/discover"
+        "uri": "/v2.5/members/discover*"
       },
       {
-        "uri": "/v2.5/members/new"
-      },
-      {
-        "uri": "/v2.5/swipe*"
-      },
-      {
-        "note": "Report or block member",
-        "uri": "/v2.5/help/request"
-      },
-      {
-        "note": "Request IC",
-        "uri": "/v2.5/match/*"
-      },
-      {
-        "note": "Upload Icebreaker IC media",
-        "uri": "/v2.5/media/profile/icebreaker"
-      },
-      {
-        "note": "Upload custom IC media",
-        "uri": "/v2.5/media/message"
-      },
-      {
-        "note": "View profiles",
-        "uri": "/v2.5/members/*"
+        "uri": "/v2.5/members/new*"
       }
     ]
   },
@@ -46,74 +23,6 @@
     "routes": [
       {
         "uri": "/v2.5/user/activities/*"
-      },
-      {
-        "uri": "/v2.5/swipe*"
-      },
-      {
-        "uri": "/v2.5/user/swipes/reset"
-      },
-      {
-        "note": "Favourite profile",
-        "uri": "/v2.5/members/:otherMemberID/favourite"
-      },
-      {
-        "note": "Report or block member",
-        "uri": "/v2.5/help/request"
-      },
-      {
-        "note": "Unblock member",
-        "uri": "/v2.5/members/[0-9]+/unblock",
-        "regex": true
-      },
-      {
-        "note": "Request IC",
-        "uri": "/v2.5/match/*"
-      },
-      {
-        "note": "View profiles",
-        "uri": "/v2.5/members/*"
-      }
-    ]
-  },
-  {
-    "name": "matches",
-    "routes": [
-      {
-        "uri": "/v2.5/instant-chat/*"
-      },
-      {
-        "uri": "/v2.5/matches/*"
-      },
-      {
-        "note": "View profiles",
-        "uri": "/v2.5/members/[0-9]+"
-      },
-      {
-        "note": "Favourite profile",
-        "uri": "/v2.5/members/[0-9]+/favourite"
-      },
-      {
-        "note": "Report member",
-        "uri": "/v2.5/help/request"
-      },
-      {
-        "note": "Send media message",
-        "uri": "/v2.5/media/message"
-      }
-    ]
-  },
-  {
-    "name": "user",
-    "routes": [
-      {
-        "uri": "/v2.5/user/*"
-      },
-      {
-        "uri": "/v2.5/payments/subscription/manage"
-      },
-      {
-        "uri": "/v2.5/media/profile/*"
       }
     ]
   }

@@ -218,10 +218,14 @@ func (f *teapotFilter) SendTeapotMessage(ctx filters.FilterContext, teapot teapo
 
 	ctx.Logger().Infof("Locale: %s", locale)
 
+	message := teapot.Message[locale]
+	if strings.Contains(teapot.Message[locale], "%s") {
+		message = fmt.Sprintf(teapot.Message[locale], teapot.EndsAt.UTC().Format("3:04pm UTC"))
+	}
 	jsonResponse, _ := json.Marshal(&teapotError{
 		Status: 418,
 		Error: teapotResponse{
-			Message:                     fmt.Sprintf(teapot.Message[locale], teapot.EndsAt.UTC().Format("3:04pm UTC")),
+			Message:                     message,
 			Title:                       teapot.Title[titleLocale],
 			PredictedUptimeTimestampUTC: teapot.EndsAt.UTC().Format(time.RFC3339),
 			Global:                      global,
