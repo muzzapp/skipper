@@ -53,7 +53,7 @@
     "ignoreCountries": [],
     "onlyCountries": [],
     "title": {
-      "en": "Essential Maintenance"
+      "en": null
     },
     "message": {
       "en": "Sorry! Muzz will be unavailable until %s whilst we do some essential maintenance\n\nThere's no need to delete or reinstall your app",
