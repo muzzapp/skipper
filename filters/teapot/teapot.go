@@ -60,11 +60,11 @@ type teapotError struct {
 }
 
 type teapotResponse struct {
-	Type                        int    `json:"type"`
-	Title                       string `json:"title"`
-	Message                     string `json:"message"`
-	PredictedUptimeTimestampUTC string `json:"predictedUptimeTimestampUTC"`
-	Global                      bool   `json:"global"`
+	Type                        int     `json:"type"`
+	Title                       *string `json:"title"`
+	Message                     *string `json:"message"`
+	PredictedUptimeTimestampUTC string  `json:"predictedUptimeTimestampUTC"`
+	Global                      bool    `json:"global"`
 }
 
 func NewTeapot() filters.Spec {
