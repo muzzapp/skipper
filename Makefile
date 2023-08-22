@@ -11,6 +11,10 @@ TEST_PLUGINS       = _test_plugins/filter_noop.so \
 		     _test_plugins/multitype_noop.so \
 		     _test_plugins_fail/fail.so
 
+GOOS 		= linux
+GOARCH 		= arm64
+CGO_ENABLED = 0
+
 .PHONY: default
 default: help
 
