@@ -12,7 +12,7 @@ TEST_PLUGINS       = _test_plugins/filter_noop.so \
 		     _test_plugins_fail/fail.so
 
 .PHONY: default
-default: build
+default: help
 
 .PHONY: help
 help: ## Display this help
@@ -229,3 +229,13 @@ show-cover: .coverprofile-all
 publish-coverage: .coverprofile-all
 	curl -s https://codecov.io/bash -o codecov
 	bash codecov -f .coverprofile-all
+
+MUZZ_CONTAINER_IMAGE := 124547247223.dkr.ecr.eu-west-2.amazonaws.com/skipper:latest
+
+.PHONY: muzz-docker-build
+muzz-docker-build: ## MUZZ CUSTOM: Builds a container image
+	docker build -t $(MUZZ_CONTAINER_IMAGE) .
+
+.PHONY: muzz-docker-push
+muzz-docker-push: muzz-docker-build ## MUZZ CUSTOM: Builds a container image and pushes it
+	docker push $(MUZZ_CONTAINER_IMAGE)
