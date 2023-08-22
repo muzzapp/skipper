@@ -237,7 +237,7 @@ publish-coverage: .coverprofile-all
 MUZZ_CONTAINER_IMAGE := 124547247223.dkr.ecr.eu-west-2.amazonaws.com/skipper:latest
 
 .PHONY: muzz-docker-build
-muzz-docker-build: build ## MUZZ CUSTOM: Builds a container image
+muzz-docker-build: build.linux.arm64 ## MUZZ CUSTOM: Builds a container image
 	docker build -t $(MUZZ_CONTAINER_IMAGE) .
 
 .PHONY: muzz-docker-push
