@@ -31,6 +31,14 @@ RUN CGO_ENABLED=1 \
     go \
       build \
       -trimpath \
+      -buildmode=plugin \
+      -o plugins/filters/auth/auth.so \
+      plugins/filters/auth/*.go
+
+RUN CGO_ENABLED=1 \
+    go \
+      build \
+      -trimpath \
       -o bin/skipper \
       ./cmd/skipper
 
@@ -45,5 +53,6 @@ COPY --from=builder /lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1
 COPY --from=builder /app/bin/skipper /bin/skipper
 COPY --from=builder /app/plugins/filters/teapot/teapot.so /plugins/filters/teapot.so
 COPY --from=builder /app/plugins/filters/attestation/attestation.so /plugins/filters/attestation.so
+COPY --from=builder /app/plugins/filters/auth/auth.so /plugins/filters/auth.so
 
 ENTRYPOINT ["/bin/skipper"]
