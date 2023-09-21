@@ -55,4 +55,6 @@ COPY --from=builder /app/bin/skipper /bin/skipper
 COPY --from=builder /app/plugins/filters/teapot/teapot.so /plugins/filters/teapot.so
 COPY --from=builder /app/plugins/filters/attestation/attestation.so /plugins/filters/attestation.so
 
-ENTRYPOINT ["/bin/skipper"]
+COPY --from=builder /app/routes.eskip /routes.eskip
+
+ENTRYPOINT ["/bin/skipper", "-routes-file", "routes.eskip"]

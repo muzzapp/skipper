@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+    web:
+        image: muzz-skipper:latest
+        restart: always
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=traefik"
+            - "traefik.http.routers.api.rule=Host(`api.muzzapi.local`)"
+            - "traefik.http.routers.api.entrypoints=https"
+            - "traefik.http.routers.api.tls=true"
+            - "traefik.http.services.api.loadbalancer.server.port=9090"
+        networks:
+            - traefik
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+
+networks:
+    traefik:
+        external: true
