@@ -82,8 +82,6 @@ func (as appStore) validate(
 		return integrityFailure, err
 	}
 
-	existingAppAttestation.PlatformSuccess = true
-
 	// Step 2.
 	// Create clientDataHash as the SHA256 hash of the one-time challenge your server sends to your app before
 	// performing the attestation, and append that hash to the end of the authenticator data
