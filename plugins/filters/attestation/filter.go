@@ -3,9 +3,11 @@ package main
 import (
 	"bytes"
 	"crypto/rand"
+	_ "embed"
 	"encoding/base64"
 	"encoding/json"
 	"golang.org/x/mod/semver"
+	"golang.org/x/text/language"
 	"io"
 	"log/slog"
 	"net/http"
@@ -15,6 +17,9 @@ import (
 )
 
 var _ filters.Filter = (*attestationFilter)(nil)
+
+//go:embed lang.json
+var langStrings []byte
 
 type attestationFilter struct {
 	repo       *repo
@@ -95,7 +100,7 @@ func (a attestationFilter) Request(ctx filters.FilterContext) {
 
 		// TODO: the body is a bit trickier, plus needs to be localised
 		if semver.Compare(appVersion, minimumAndroidVersion) < 0 {
-			//sendErrorResponse(ctx, http.StatusUpgradeRequired, "Invalid OS")
+			sendUpgradeResponse(ctx, platform, "upgrade, bitch")
 		}
 
 		// skip android for now
@@ -107,10 +112,32 @@ func (a attestationFilter) Request(ctx filters.FilterContext) {
 			appVersion = "v" + appVersion
 		}
 
-		// TODO: the body is a bit trickier, plus needs to be localised
 		if semver.Compare(appVersion, minimumIosVersion) < 0 {
-			//sendErrorResponse(ctx, http.StatusUpgradeRequired, "Invalid OS")
-			bypassHeader = "true"
+			var matcher = language.NewMatcher([]language.Tag{
+				language.English,
+				language.Arabic,
+				language.Bengali,
+				language.German,
+				language.Spanish,
+				language.Persian,
+				language.French,
+				// language.Hindi, // TODO: the translations we have aren't even close
+				language.Indonesian,
+				language.Italian,
+				language.Malay,
+				language.Dutch,
+				language.Russian,
+				language.Turkish,
+				language.Urdu,
+			})
+			accept := ctx.Request().Header.Get("Accept-Language")
+			tag, _ := language.MatchStrings(matcher, "", accept)
+			locale := tag.String()
+			if len(locale) > 5 {
+				locale = strings.Split(locale, "-")[0]
+			}
+
+			sendUpgradeResponse(ctx, platform, locale)
 		}
 	default:
 		sendErrorResponse(ctx, http.StatusForbidden, "Invalid OS")
