@@ -46,7 +46,7 @@ func (a *Attestation) Parse() error {
 
 func (a *Attestation) ValidateCertificate() error {
 	if a.attestationCbor.Fmt != "apple-appattest" {
-		return errors.New("fmt is not 'apple-appattest'")
+		return errors.New("cbor fmt is not 'apple-appattest'")
 	}
 
 	// If x5c is not present, return an error

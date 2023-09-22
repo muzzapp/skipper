@@ -311,7 +311,11 @@ func (a attestationFilter) Request(ctx filters.FilterContext) {
 			return
 		}
 
-		verdict := a.appStore.validate(authorizationHeader, existingAppAttestation.Challenge, encodedKeyId)
+		verdict, validateErr := a.appStore.validate(authorizationHeader, existingAppAttestation.Challenge, encodedKeyId, existingAppAttestation)
+		if validateErr != nil {
+			existingAppAttestation.MuzzError = validateErr.Error()
+		}
+
 		err = a.repo.UpdateAttestationForUDID(existingAppAttestation)
 		if err != nil {
 			a.logger.Error("update challenge response", "err", err)

@@ -56,20 +56,21 @@ func (as appStore) validate(
 	encodedAttestation string,
 	encodedChallengeData []byte,
 	encodedKeyID string,
-) integrityEvaluation {
+	existingAppAttestation *AttestationModel,
+) (integrityEvaluation, error) {
 	req, err := as.buildRequest(
 		encodedAttestation, encodedChallengeData, encodedKeyID,
 	)
 	if err != nil {
 		as.logger.Error("bad request", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	attestation := ios.NewAttestation(req)
 
 	if err = attestation.Parse(); err != nil {
 		as.logger.Error("parse fail", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	// Step 1.
@@ -78,7 +79,7 @@ func (as appStore) validate(
 	// Verify the validity of the certificates using Apple's App Attest root certificate.
 	if err = attestation.ValidateCertificate(); err != nil {
 		as.logger.Error("validate certificate", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	// Step 2.
@@ -97,14 +98,16 @@ func (as appStore) validate(
 	// Verify that the string equals nonce.
 	if err = attestation.CheckAgainstNonce(); err != nil {
 		as.logger.Error("check against nonce", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
+
+	existingAppAttestation.NonceSuccess = true
 
 	// Step 5.
 	// Create the SHA256 hash of the public key in credCert, and verify that it matches the key identifier from your app.
 	if err = attestation.GeneratePublicKey(); err != nil {
 		as.logger.Error("generate public key", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	// Step 6.
@@ -112,14 +115,14 @@ func (as appStore) validate(
 	// data's RP ID hash.
 	if err = attestation.CheckAgainstAppID(); err != nil {
 		as.logger.Error("check against appID", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	// Step 7.
 	// Verify that the authenticator data’s counter field equals 0.
 	if err = attestation.CheckCounterIsZero(); err != nil {
 		as.logger.Error("check counter is zero", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	// Step 8.
@@ -127,15 +130,16 @@ func (as appStore) validate(
 	// development environment, or appattest followed by seven 0x00 bytes if operating in the production environment.
 	if err = attestation.ValidateAAGUID(); err != nil {
 		as.logger.Error("validate AAGUID", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
 	// Step 9.
 	// Verify that the authenticator data’s credentialId field is the same as the key identifier.
 	if err = attestation.ValidateCredentialID(); err != nil {
 		as.logger.Error("validate credentialID", "err", err)
-		return integrityFailure
+		return integrityFailure, err
 	}
 
-	return integritySuccess
+	existingAppAttestation.PlatformSuccess = true
+	return integritySuccess, nil
 }
