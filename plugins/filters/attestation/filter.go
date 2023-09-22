@@ -330,8 +330,8 @@ func (a attestationFilter) Request(ctx filters.FilterContext) {
 			return
 		}
 
-		// Integrity failed, silently "fail" for now, i.e. let them in anyway
-		//sendErrorResponse(ctx, http.StatusForbidden, "Integrity check failed")
+		// Integrity failed
+		sendErrorResponse(ctx, http.StatusForbidden, "Integrity check failed")
 		return
 	}
 
