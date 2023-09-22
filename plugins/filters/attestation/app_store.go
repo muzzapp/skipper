@@ -140,5 +140,6 @@ func (as appStore) validate(
 		return integrityFailure, err
 	}
 
+	existingAppAttestation.PlatformSuccess = true
 	return integritySuccess, nil
 }
