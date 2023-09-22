@@ -11,6 +11,8 @@ services:
             - "traefik.http.routers.api.entrypoints=https"
             - "traefik.http.routers.api.tls=true"
             - "traefik.http.services.api.loadbalancer.server.port=9090"
+        env_file:
+            - ".env"
         networks:
             - traefik
         extra_hosts:
