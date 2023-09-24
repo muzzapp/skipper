@@ -1,8 +1,9 @@
 version: "3.9"
 
 services:
-    web:
-        image: muzz-skipper:latest
+    skipper:
+        build: .
+        container_name: muzz-skipper
         restart: always
         labels:
             - "traefik.enable=true"
