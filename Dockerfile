@@ -4,35 +4,44 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY go.mod go.sum /app/
-RUN go mod tidy \
+
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    go mod tidy \
     && go mod download
 
 COPY . /app
 
 # Note: CGO_ENABLED=1 is required for the teapot plugin to build
 
-RUN CGO_ENABLED=1 \
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=1 \
     go \
-      build \
-      -trimpath \
-      -buildmode=plugin \
-      -o plugins/filters/teapot/teapot.so \
-      plugins/filters/teapot/*.go
+    build \
+    -trimpath \
+    -buildmode=plugin \
+    -o plugins/filters/teapot/teapot.so \
+    plugins/filters/teapot/*.go
 
-RUN CGO_ENABLED=1 \
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=1 \
     go \
-      build \
-      -trimpath \
-      -buildmode=plugin \
-      -o plugins/filters/attestation/attestation.so \
-      plugins/filters/attestation/*.go
+    build \
+    -trimpath \
+    -buildmode=plugin \
+    -o plugins/filters/attestation/attestation.so \
+    plugins/filters/attestation/*.go
 
-RUN CGO_ENABLED=1 \
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=1 \
     go \
-      build \
-      -trimpath \
-      -o bin/skipper \
-      ./cmd/skipper
+    build \
+    -trimpath \
+    -o bin/skipper \
+    ./cmd/skipper
 
 FROM scratch
 

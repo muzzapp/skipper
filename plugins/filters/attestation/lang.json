@@ -1,0 +1,34 @@
+{
+  "ios": {
+    "ar": "يُرجى تحديث التطبيق الخاص بك لمواصلة استخدام Muzz.\n\nابحث في Muzz في متجر التطبيقات وانقر فوق تحديث\n\nإذا كنت لا تزال تواجه مشكلات، فيُرجى حذف Muzz وإعادة تثبيته.",
+    "bn": "Muzz ব্যবহার করে যাওয়ার জন্য আপনার অ্যাপ আপডেট করুন।\n\nApp Store-এ Muzz সার্চ করুন এবং আপডেট ট্যাপ করুন\n\nএর পরেও কোনও সমস্যা হলে অনুগ্রহ করে Muzz ডিলিট করে রি-ইনস্টল করুন।",
+    "de": "Bitte aktualisiere deine App, um Muzz weiterhin nutzen zu können.\n\nSuche im App Store nach Muzz und klicke auf “Aktualisieren”\n\nWenn du immer noch Probleme hast, lösche bitte Muzz und installiere es neu.",
+    "en": "Please update your app to continue using Muzz.\n\nSearch Muzz in the App Store and tap update\n\nIf you still face issues please delete and reinstall Muzz.",
+    "es": "Actualiza tu aplicación para seguir usando Muzz.\n\nBusca Muzz en la App Store y pulsa actualizar.\n\nSi sigues teniendo problemas, borra Muzz y vuelve a instalarla.",
+    "fa": "لطفاً اپلیکیشن خود را به روز رسانی کنید تا بتوانید به استفاده از موزمچ ادامه دهید.\nدر اپ استور برنامه موزمچ را جستجو کنید و سپس برای به روز رسانی روی آن ضربه بزنید\nاگر باز هم دچار مشکل شدید لطفاً اپلیکیشن موزمچ را حذف و دوباره نصب کنید.",
+    "fr": "Veuillez mettre à jour votre application pour continuer à utiliser Muzz.\n\nRecherchez Muzz dans l'App Store et appuyez sur mettre à jour\n\nSi vous rencontrez toujours des problèmes, veuillez supprimer et réinstaller Muzz.",
+    "id": "Silakan perbarui aplikasi Anda untuk terus menggunakan Muzz.\n\nCari Muzz di App Store dan ketuk perbarui\nJika Anda masih menghadapi permasalahan-permasalahan, silakan hapus dan instal lagi Muzz.",
+    "it": "Aggiorna la tua app per continuare a usare Muzz.\n\nCerca Muzz sull'App Store e seleziona Aggiorna\n\nSe hai ancora problemi, elimina Muzz e installala di nuovo.",
+    "ms": "Sila kemas kini aplikasi anda untuk meneruskan penggunaan Muzz.\n",
+    "nl": "Werk de app bij om Muzz te blijven gebruiken.\n\nZoek Muzz in de App Store en tik op Werk bij\n\nAls je nog steeds problemen ondervindt, verwijder Muzz dan en installeer deze opnieuw.",
+    "ru": "Чтобы продолжить пользоваться Muzz, обновите приложение.\n\nНайдите Muzz в AppStore и нажмите обновить\n\nЕсли проблема не решена, переустановите Muzz.",
+    "tr": "Muzz'i kullanmaya devam etmek için lütfen uygulamanı güncelle.\n\nApp Store'da Muzz'i ara ve güncellemeye dokun\n\nSorun yaşamaya devam ediyorsan lütfen Muzz'i sil ve yeniden yükle.",
+    "ur": "Muzz ka istaamaal jari rakhne ke liye barahe-karam apni app ko aap update karein.\nApp Store me Muzz talaash karein or update par tap karein.\nAgar aap ko masaael ka saamna he to barahe-karam Muzz ko hazaf kar ke dobara install karein."
+  },
+  "android": {
+    "ar": "يُرجى تحديث التطبيق الخاص بك لمواصلة استخدام Muzz.\n\nابحث في Muzz في Google Play وانقر فوق تحديث\nإذا كنت لا تزال تواجه مشكلات، فيُرجى حذف Muzz وإعادة تثبيته.",
+    "bn": "Muzz ব্যবহার করে যাওয়ার জন্য আপনার অ্যাপ আপডেট করুন।\n\nGoogle Play-তে Muzz সার্চ করুন এবং আপডেট ট্যাপ করুন\n\nএর পরেও কোনও সমস্যা হলে অনুগ্রহ করে Muzz ডিলিট করে রি-ইন",
+    "de": "Bitte aktualisiere deine App, um Muzz weiterhin nutzen zu können.\n\nSuche im Google Play-Store nach Muzz und klicke auf “Aktualisieren”\n\nWenn du immer noch Probleme hast, lösche bitte Muzz und installiere es neu.",
+    "en": "Please update your app to continue using Muzz.\n\nSearch Muzz in Google Play and tap update\n\nIf you still face issues please delete and reinstall Muzz.",
+    "es": "Actualiza tu aplicación para seguir usando Muzz.\n\nBusca Muzz en Google Play y pulsa actualizar.\n\nSi sigues teniendo problemas, borra Muzz y vuelve a instalarla.",
+    "fa": "لطفاً اپلیکیشن خود را به روز رسانی کنید تا بتوانید به استفاده از موزمچ ادامه دهید.\nدر گوگل پلی برنامه موزمچ را جستجو کنید و سپس برای به روز رسانی روی آن ضربه بزنید\nاگر باز هم دچار مشکل شدید لطفاً اپلیکیشن موزمچ را حذف و دوباره نصب کنید.",
+    "fr": "Veuillez mettre à jour votre application pour continuer à utiliser Muzz.\n\nRecherchez Muzz dans l'App Store et appuyez sur mettre à jourSi vous rencontrez toujours des problèmes, veuillez supprimer et réinstaller Muzz.",
+    "id": "Silakan perbarui aplikasi Anda untuk terus menggunakan Muzz.\n\nCari Muzz di App Store dan ketuk perbarui\nJika Anda masih menghadapi permasalahan-permasalahan, silakan hapus dan instal lagi Muzz.",
+    "it": "Aggiorna la tua app per continuare a usare Muzz.\n\nCerca Muzz su Google Play e seleziona Aggiorna\n\nSe hai ancora problemi, elimina Muzz e installala di nuovo.",
+    "ms": "Sila kemas kini aplikasi anda untuk meneruskan penggunaan Muzz.\n",
+    "nl": "Werk de app bij om Muzz te blijven gebruiken.\n\nZoek Muzz in de App Store en tik op Updaten\n\nAls je nog steeds problemen ondervindt, verwijder Muzz dan en installeer deze opnieuw.",
+    "ru": "Чтобы продолжить пользоваться Muzz, обновите приложение.\n\nНайдите Muzz в GooglePlay и нажмите обновить\n\nЕсли проблема не решена, переустановите Muzz.",
+    "tr": "Muzz'i kullanmaya devam etmek için lütfen uygulamanı güncelle.\n\nGoogle Play'de Muzz'i ara ve güncellemeye dokun\n\nSorun yaşamaya devam ediyorsan lütfen Muzz'i sil ve yeniden yükle.",
+    "ur": "Muzz ka istaamaal jari rakhne ke liye barahe-karam apni app ko aap update karein.\n\nGoogle Play mein Muzz talash karein or update par tap karein.\n\nAgar aap ko ab bhi masaael ka saamna he to barahe-karam Muzz ko hazaf kar ke dobara install karein."
+  }
+}

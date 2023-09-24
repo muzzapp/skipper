@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io"
 	"net/http"
 	"os"
@@ -45,6 +46,46 @@ func sendErrorResponse(ctx filters.FilterContext, statusCode int, message string
 	ctx.Serve(
 		&http.Response{
 			StatusCode: statusCode,
+			Header:     header,
+			Body:       io.NopCloser(bytes.NewBufferString(string(b))),
+		},
+	)
+}
+
+func sendUpgradeResponse(ctx filters.FilterContext, platform Platform, locale string) {
+	var ls map[Platform]map[string]string
+	err := json.Unmarshal(langStrings, &ls)
+	if err != nil {
+		log.Println(err)
+	}
+
+	message := ls[platform][locale]
+
+	b, _ := json.Marshal(
+		struct {
+			Status int `json:"status"`
+			Error  struct {
+				Type    int    `json:"type"`
+				Message string `json:"message"`
+			} `json:"error"`
+		}{
+			Status: http.StatusUpgradeRequired,
+			Error: struct {
+				Type    int    `json:"type"`
+				Message string `json:"message"`
+			}{
+				Type:    0,
+				Message: message,
+			},
+		},
+	)
+
+	header := http.Header{}
+	header.Set("Content-Type", "application/json")
+
+	ctx.Serve(
+		&http.Response{
+			StatusCode: http.StatusUpgradeRequired,
 			Header:     header,
 			Body:       io.NopCloser(bytes.NewBufferString(string(b))),
 		},
