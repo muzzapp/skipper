@@ -303,7 +303,7 @@ func (a attestationFilter) Request(ctx filters.FilterContext) {
 
 	switch {
 	case isAndroid:
-		verdict := a.googlePlay.validate(challengeResponse, serverNonce)
+		verdict := a.googlePlay.validate(challengeResponse, serverNonce, existingAppAttestation)
 		err = a.repo.UpdateAttestationForUDID(existingAppAttestation)
 		if err != nil {
 			a.logger.Error("update challenge response", "err", err)

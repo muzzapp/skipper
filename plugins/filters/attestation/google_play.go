@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	"log/slog"
+	"strings"
 
 	"google.golang.org/api/option"
 	"google.golang.org/api/playintegrity/v1"
@@ -35,7 +37,11 @@ func newGooglePlayIntegrityServiceClient(logger *slog.Logger) googlePlayIntegrit
 	}
 }
 
-func (c googlePlayIntegrityServiceClient) validate(token []byte, nonce string) integrityEvaluation {
+func (c googlePlayIntegrityServiceClient) validate(
+	token []byte,
+	nonce string,
+	existingAppAttestation *AttestationModel,
+) integrityEvaluation {
 	googleResponse, googleErr := c.client.
 		V1.
 		DecodeIntegrityToken(
@@ -46,18 +52,29 @@ func (c googlePlayIntegrityServiceClient) validate(token []byte, nonce string) i
 		).
 		Do()
 	if googleErr != nil {
-		// $appAttestation->setGoogleResponse(json_encode($e->getErrors()));
-		// $appAttestation->setPlatformSuccess(false);
-		// $appAttestation->setMuzzError("Google threw an exception");
+		googleResp, err := json.Marshal(googleResponse.ServerResponse)
+		if err != nil {
+			googleResp = []byte("Unable to decode JSON")
+		}
+
+		existingAppAttestation.GoogleResponse = string(googleResp)
+		existingAppAttestation.PlatformSuccess = false
+		existingAppAttestation.MuzzError = "Google threw an error"
 		return integrityFailure
 	}
 
 	// $appAttestation->setGoogleResponse((string)json_encode($response));
+	googleResp, err := json.Marshal(googleResponse.ServerResponse)
+	if err != nil {
+		googleResp = []byte("Unable to decode JSON")
+	}
+
+	existingAppAttestation.GoogleResponse = string(googleResp)
 
 	appVerdict := googleResponse.TokenPayloadExternal.AppIntegrity.AppRecognitionVerdict
 	if appVerdict == "UNEVALUATED" {
-		// $appAttestation->setPlatformSuccess(false);
-		// $appAttestation->setMuzzError("Google app verdict is UNEVALUATED");
+		existingAppAttestation.PlatformSuccess = false
+		existingAppAttestation.MuzzError = "Google app verdict is UNEVALUATED"
 		return integrityUnevaluated
 	}
 
@@ -88,7 +105,6 @@ func (c googlePlayIntegrityServiceClient) validate(token []byte, nonce string) i
 
 	// Did Google give us confidence in the installation and device?
 	var platformSuccess = true
-	_ = platformSuccess
 
 	// Ensure the app has been recognised by the Play Store the package is `com.muzmatch.muzmatchapp`
 	if requestPackageName != productionAndroidPackageName {
@@ -109,13 +125,12 @@ func (c googlePlayIntegrityServiceClient) validate(token []byte, nonce string) i
 		nonceSuccess = false
 		muzzError = append(muzzError, fmt.Sprintf("Nonce mismatch: server %q app %q", nonce, googleNonce))
 	}
-	_ = nonceSuccess
 
-	// $appAttestation->setPlatformSuccess($platformSuccess);
-	// $appAttestation->setNonceSuccess($nonceSuccess);
+	existingAppAttestation.PlatformSuccess = platformSuccess
+	existingAppAttestation.NonceSuccess = nonceSuccess
 
 	if len(muzzError) > 0 {
-		// $appAttestation->setMuzzError(implode("\n", $muzzError));
+		existingAppAttestation.MuzzError = strings.Join(muzzError, "\n")
 		return integrityFailure
 	}
 
