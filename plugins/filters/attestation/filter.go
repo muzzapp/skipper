@@ -28,21 +28,33 @@ type attestationFilter struct {
 	logger     *slog.Logger
 }
 
-func (a attestationFilter) Request(ctx filters.FilterContext) {
-	r := ctx.Request()
-
+// isProtectedRoute Check if the HTTP route
+func isProtectedRoute(r *http.Request) bool {
 	uri := r.URL.RequestURI()
-	var isProtectedRoute bool
+
 	for _, protectedRoute := range []string{
-		"/v2.5/auth/confirm",
+		"/v2.5/auth/login",
+		"/v2.5/auth/sign-up",
+
+		// Email editing
+		//"/v2.5/user/email",
+
+		// Phone number amending
+		//"/v2.5/phone",
+		//"/v2.5/phone/retry",
 	} {
 		if uri == protectedRoute {
-			isProtectedRoute = true
-			break
+			return true
 		}
 	}
 
-	if !isProtectedRoute {
+	return false
+}
+
+func (a attestationFilter) Request(ctx filters.FilterContext) {
+	r := ctx.Request()
+
+	if !isProtectedRoute(r) {
 		// Not a protected route, skip
 		return
 	}
