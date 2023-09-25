@@ -11,6 +11,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/zalando/skipper/filters"
@@ -29,11 +30,16 @@ type attestationFilter struct {
 }
 
 // isProtectedRoute Check if the HTTP route
-func isProtectedRoute(r *http.Request) bool {
+func isProtectedRoute(r *http.Request, requestBody []byte) bool {
 	uri := r.URL.RequestURI()
 
+	if uri == "/v2.5/auth/login" {
+		// Need phoneNumber only
+		rgx := regexp.MustCompile(`\bphoneNumber=`)
+		return rgx.MatchString(string(requestBody))
+	}
+
 	for _, protectedRoute := range []string{
-		"/v2.5/auth/login",
 		"/v2.5/auth/sign-up",
 
 		// Email editing
@@ -54,7 +60,11 @@ func isProtectedRoute(r *http.Request) bool {
 func (a attestationFilter) Request(ctx filters.FilterContext) {
 	r := ctx.Request()
 
-	if !isProtectedRoute(r) {
+	// request bodies can only be read once
+	requestBody, _ := io.ReadAll(r.Body)
+	r.Body = io.NopCloser(bytes.NewBuffer(requestBody))
+
+	if !isProtectedRoute(r, requestBody) {
 		// Not a protected route, skip
 		return
 	}
@@ -147,8 +157,6 @@ func (a attestationFilter) Request(ctx filters.FilterContext) {
 		// Generate 128 random bytes
 		buf := make([]byte, 128)
 		_, _ = rand.Read(buf)
-
-		requestBody, _ := io.ReadAll(ctx.Request().Body)
 
 		err := a.repo.CreateAttestationForUDID(
 			deviceUDID,
