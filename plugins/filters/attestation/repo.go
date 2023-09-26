@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/zalando/skipper/plugins/lib/awsx"
 	"net/http"
 	"strconv"
 	"strings"
@@ -21,7 +21,7 @@ type repo struct {
 }
 
 func NewRepo(table string) *repo {
-	cfg, _ := config.LoadDefaultConfig(context.Background())
+	cfg := awsx.MustGetConfig()
 	client := dynamodb.NewFromConfig(cfg)
 
 	return &repo{

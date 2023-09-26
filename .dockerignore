@@ -6,3 +6,4 @@ _test_plugins
 _test_plugins_fail
 .github
 *_test.go
+.git
