@@ -1,0 +1,66 @@
+capture:
+    Path("/v3/capture")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6060";
+
+speed_dating:
+    Path("/v3/events")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6061";
+
+consumables:
+    Path("/v3/consumables")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6062";
+
+social_api:
+    Path("/v3/s/**")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6063";
+
+speed_dating_arena:
+    Path("/v3/arena/**")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6064";
+
+referral:
+    Path("/v3/referral")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6065";
+
+unfurling:
+    Path("/v3/unfurl")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6066";
+
+config:
+    Path("/v3/config")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6068";
+
+explore:
+    Path("/v3/explore/**")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6069";
+
+actions:
+    Path("/v3/actions/**")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6070";
+
+block:
+    Path("/v3/block/**")
+    -> preserveHost("true")
+    -> "http://host.docker.internal:6073";
+
+all:
+    *
+    -> preserveHost("true")
+    -> teapot()
+    -> attestation()
+    -> "http://api_web:80/";
+
+health:
+    Path("/health")
+    -> status(200)
+    -> <shunt>;

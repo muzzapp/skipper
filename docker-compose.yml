@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  skipper:
+    build: .
+    container_name: muzz-api-gateway
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.skipper.rule=Host(`api.muzzapi.local`)"
+      - "traefik.http.routers.skipper.entrypoints=https"
+      - "traefik.http.routers.skipper.tls=true"
+      - "traefik.http.services.skipper.loadbalancer.server.port=9090"
+    entrypoint: [ "/bin/skipper", "-routes-file", "routes.eskip" ]
+    networks:
+      - traefik
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ".env"
+
+networks:
+  traefik:
+    external: true
